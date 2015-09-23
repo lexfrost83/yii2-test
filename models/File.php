@@ -30,6 +30,14 @@ class File extends \yii\db\ActiveRecord
         return 'file';
     }
 
+    public  function validateFilterType($attr, $params)
+    {
+        $allowed = array('application/pdf', 'application/msword');
+
+        if (!in_array($this->attr, $allowed)){
+            $this->addRrror($attr, 'You cam only upload PDF files or World docs.');
+        }
+    }
     /**
      * @inheritdoc
      */
@@ -41,7 +49,8 @@ class File extends \yii\db\ActiveRecord
             [['description'], 'string'],
             [['date_entered', 'date_updated'], 'safe'],
             [['name'], 'string', 'max' => 80],
-            [['type'], 'string', 'max' => 45]
+            [['type'], 'string', 'max' => 45],
+            ['type', 'validateFileType'],
         ];
     }
 
